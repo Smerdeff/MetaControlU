@@ -54,7 +54,7 @@ type
     ActionComponent: TActionComponent;
     ActionIcon: string;
     ActionEnabledValue: string;
-    HTTP_POST_SQL: string; {Нужно предоставить переменные ulr и body}
+    HTTP_POST_SQL: string; {РќСѓР¶РЅРѕ РїСЂРµРґРѕСЃС‚Р°РІРёС‚СЊ РїРµСЂРµРјРµРЅРЅС‹Рµ ulr Рё body}
     OwnerViewItem: TViewItem;
     AfterProperty: set of TActionProperty;
     procedure Execute(Sender: TComponent);
@@ -91,8 +91,8 @@ type
     ColorField: string;
     property Visible: Boolean read FVisible;
     property Caption: string read FCaption write setCaption;
-    property Value: Variant read FValue write FValue; {Программно управляем значением поля}
-    property FieldValue: Variant read getFieldValue; {Получаем значение из dataset'а}
+    property Value: Variant read FValue write FValue; {РџСЂРѕРіСЂР°РјРјРЅРѕ СѓРїСЂР°РІР»СЏРµРј Р·РЅР°С‡РµРЅРёРµРј РїРѕР»СЏ}
+    property FieldValue: Variant read getFieldValue; {РџРѕР»СѓС‡Р°РµРј Р·РЅР°С‡РµРЅРёРµ РёР· dataset'Р°}
     procedure CreateColumn(AGridDB: TcxGridTableView; ABandIndex: Integer = 0);
     procedure SaveValue();
     procedure ColumnButtonClick(Sender: TObject; AButtonIndex: Integer);
@@ -104,9 +104,9 @@ type
 
   TViewItemStyle = class
   public
-    Column: TcxGridDBBandedColumn; //Ссылка на колонку, на которую будут стили
-    CheckColumn: TcxGridDBBandedColumn; //Ссылка на check колонку для включения стиля.
-    Style: TcxStyle;               //Ссылка на Style
+    Column: TcxGridDBBandedColumn; //РЎСЃС‹Р»РєР° РЅР° РєРѕР»РѕРЅРєСѓ, РЅР° РєРѕС‚РѕСЂСѓСЋ Р±СѓРґСѓС‚ СЃС‚РёР»Рё
+    CheckColumn: TcxGridDBBandedColumn; //РЎСЃС‹Р»РєР° РЅР° check РєРѕР»РѕРЅРєСѓ РґР»СЏ РІРєР»СЋС‡РµРЅРёСЏ СЃС‚РёР»СЏ.
+    Style: TcxStyle;               //РЎСЃС‹Р»РєР° РЅР° Style
   end;
 
   TViewItemStyleList = class(TObjectList)
@@ -157,8 +157,8 @@ type
     PickBackStr: string;
     OpenFormPickMode: Boolean;
     ResyncMode: boolean;
-    IncomContext: TViewItem;  {Входящий контекст}
-    OutContexts: TList; {Список кому мы отдали конекст}
+    IncomContext: TViewItem;  {Р’С…РѕРґСЏС‰РёР№ РєРѕРЅС‚РµРєСЃС‚}
+    OutContexts: TList; {РЎРїРёСЃРѕРє РєРѕРјСѓ РјС‹ РѕС‚РґР°Р»Рё РєРѕРЅРµРєСЃС‚}
     StyleList: TViewItemStyleList;
     property ViewType: TViewItemViewType read FViewType;
     property DataType: TViewItemDataType read FDataType;
@@ -476,8 +476,8 @@ begin
         v := FParser.Calc(News);
         News := StringReplace(VarToStrDef(v, 'null'), ',', '.', []);
       except
-        ShowMessage('Ошибка при распознании строки: ' + News);
-        //frmMain.AddMessage('Ошибка при распознании строки: ' + NewS, 2);
+        ShowMessage('РћС€РёР±РєР° РїСЂРё СЂР°СЃРїРѕР·РЅР°РЅРёРё СЃС‚СЂРѕРєРё: ' + News);
+        //frmMain.AddMessage('РћС€РёР±РєР° РїСЂРё СЂР°СЃРїРѕР·РЅР°РЅРёРё СЃС‚СЂРѕРєРё: ' + NewS, 2);
       end;
       result := News + copy(s, i + 1, length(s));
       exit;
@@ -548,34 +548,34 @@ begin
 
   with T do
   begin
-    {Поле из mainview}
+    {РџРѕР»Рµ РёР· mainview}
     if Count = 2 then
     begin
-      viField := MainViewItem.Fields.Find(GetVar(T.Strings[0]));    {Возвращает колонку по имени}
+      viField := MainViewItem.Fields.Find(GetVar(T.Strings[0]));    {Р’РѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»РѕРЅРєСѓ РїРѕ РёРјРµРЅРё}
       if Assigned(viField) then
         with viField do
         begin
           if AnsiCompareText(Strings[1], 'name') = 0 then
             v := viField.name
-          else if (AnsiCompareText(Strings[1], 'value') = 0) and (MainViewItem.DataSource.DataSet.RecordCount > 0) then    //Значение поля в гриде
+          else if (AnsiCompareText(Strings[1], 'value') = 0) and (MainViewItem.DataSource.DataSet.RecordCount > 0) then    //Р—РЅР°С‡РµРЅРёРµ РїРѕР»СЏ РІ РіСЂРёРґРµ
             v := Column.EditValue
-          else if (AnsiCompareText(Strings[1], 'reference_value') = 0) or (AnsiCompareText(Strings[1], 'value') = 0) then  //Значение в контроле.
+          else if (AnsiCompareText(Strings[1], 'reference_value') = 0) or (AnsiCompareText(Strings[1], 'value') = 0) then  //Р—РЅР°С‡РµРЅРёРµ РІ РєРѕРЅС‚СЂРѕР»Рµ.
           begin
             viField.ReferenceHeadViewItem.SaveValue();
             v := viField.ReferenceHeadViewItem.Value;
           end
-          else if AnsiCompareText(Strings[1], 'values_semicolon') = 0 then  {Возвращает список выбранных строк (primary key) через точку с запятой}
+          else if AnsiCompareText(Strings[1], 'values_semicolon') = 0 then  {Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє РІС‹Р±СЂР°РЅРЅС‹С… СЃС‚СЂРѕРє (primary key) С‡РµСЂРµР· С‚РѕС‡РєСѓ СЃ Р·Р°РїСЏС‚РѕР№}
             v := CHelper.GetSelectedString_semicolon(gridDBMain, Column.Index);
 
         end;
     end
     else
-    {Тройная анотация viewitem.field.value}
+    {РўСЂРѕР№РЅР°СЏ Р°РЅРѕС‚Р°С†РёСЏ viewitem.field.value}
 if Count = 3 then
 
     begin
       ViewItem := TViewItem(ViewItemList.Find(T.Strings[0]));
-      viField := ViewItem.Fields.Find(T.Strings[1]);    {Возвращает колонку по имени}
+      viField := ViewItem.Fields.Find(T.Strings[1]);    {Р’РѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»РѕРЅРєСѓ РїРѕ РёРјРµРЅРё}
       if Assigned(viField) then
         with viField do
         begin
@@ -584,8 +584,8 @@ if Count = 3 then
           if AnsiCompareText(Strings[2], 'value') = 0 then
             v := FieldValue;
 
-          if AnsiCompareText(Strings[2], 'values_semicolon') = 0 then  {Возвращает список выбранных строк (primary key) через точку с запятой}
-            v := CHelper.GetSelectedString_semicolon(gridDBMain, Column.Index);  {TODO это явно не работает}
+          if AnsiCompareText(Strings[2], 'values_semicolon') = 0 then  {Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє РІС‹Р±СЂР°РЅРЅС‹С… СЃС‚СЂРѕРє (primary key) С‡РµСЂРµР· С‚РѕС‡РєСѓ СЃ Р·Р°РїСЏС‚РѕР№}
+            v := CHelper.GetSelectedString_semicolon(gridDBMain, Column.Index);  {TODO СЌС‚Рѕ СЏРІРЅРѕ РЅРµ СЂР°Р±РѕС‚Р°РµС‚}
 
         end;
 
@@ -621,7 +621,7 @@ var
   i: Integer;
 begin
 
-  // Освобождение памяти, если она получена
+  // РћСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё, РµСЃР»Рё РѕРЅР° РїРѕР»СѓС‡РµРЅР°
   if Assigned(self.fields) then
     self.Fields.Free;
 
@@ -632,7 +632,7 @@ begin
     self.StyleList.Free;
 
 
-  {Удаляем все ссылки на себя}
+  {РЈРґР°Р»СЏРµРј РІСЃРµ СЃСЃС‹Р»РєРё РЅР° СЃРµР±СЏ}
   if Assigned(self.OutContexts) then
   begin
     for i := 0 to self.OutContexts.Count - 1 do
@@ -642,7 +642,7 @@ begin
     self.OutContexts.Free;
   end;
 
-  {Удаляем все ссылки на себя}
+  {РЈРґР°Р»СЏРµРј РІСЃРµ СЃСЃС‹Р»РєРё РЅР° СЃРµР±СЏ}
   if Assigned(self.IncomContext) then
     for i := 0 to self.IncomContext.OutContexts.Count - 1 do
     begin
@@ -655,7 +655,7 @@ begin
   if Assigned(self.IncomContext) then
     self.IncomContext.Free;
    }
-  // Всегда вызывайте родительский деструктор после выполнения вашего собственного кода
+  // Р’СЃРµРіРґР° РІС‹Р·С‹РІР°Р№С‚Рµ СЂРѕРґРёС‚РµР»СЊСЃРєРёР№ РґРµСЃС‚СЂСѓРєС‚РѕСЂ РїРѕСЃР»Рµ РІС‹РїРѕР»РЅРµРЅРёСЏ РІР°С€РµРіРѕ СЃРѕР±СЃС‚РІРµРЅРЅРѕРіРѕ РєРѕРґР°
   inherited;
 end;
 
@@ -742,7 +742,7 @@ begin
 //if DataSet.Filter='' then Accept:=True else
   //ListFieldNames:=TcxLookupComboBox(TViewitem(ViewTableList[DataSet.Tag]).Component).Properties.ListFieldNames;
 
-  //Accept := Pos(AnsiUpperCase(DataSet.Filter), AnsiUpperCase(DataSet.FieldByName(self.ResultField).AsString)) > 0; //Like фильтр
+  //Accept := Pos(AnsiUpperCase(DataSet.Filter), AnsiUpperCase(DataSet.FieldByName(self.ResultField).AsString)) > 0; //Like С„РёР»СЊС‚СЂ
     //ShowMessage(DataSet.Owner.Name);
 
   Filter := AnsiUpperCase(DataSet.Filter);
@@ -904,7 +904,7 @@ begin
       ReadOnly := false;
       LoadFromDataSet(Query);
       First;
-      //if pfInKey in FindField(PrimayKey).ProviderFlags  then ShowMessage('Флаг');
+      //if pfInKey in FindField(PrimayKey).ProviderFlags  then ShowMessage('Р¤Р»Р°Рі');
       FindField(PrimayKey).ProviderFlags := [pfInKey];
       if recordCount > 0 then
         if {recordCount>0} BookMarkValid(b) then
@@ -946,9 +946,9 @@ begin
     DS.DataSet := MemData;
     Self.MemData := MemData;
       {
-    Если стоит клиент, то забрали данные с query, залили в MemData.
-    Используем для фильтрации
-    А query используем в лукапе в main grid'е
+    Р•СЃР»Рё СЃС‚РѕРёС‚ РєР»РёРµРЅС‚, С‚Рѕ Р·Р°Р±СЂР°Р»Рё РґР°РЅРЅС‹Рµ СЃ query, Р·Р°Р»РёР»Рё РІ MemData.
+    РСЃРїРѕР»СЊР·СѓРµРј РґР»СЏ С„РёР»СЊС‚СЂР°С†РёРё
+    Рђ query РёСЃРїРѕР»СЊР·СѓРµРј РІ Р»СѓРєР°РїРµ РІ main grid'Рµ
     }
 
   end;
@@ -1077,7 +1077,7 @@ begin
 
   if adoMT_xmlforms.RecordCount = 0 then
   begin
-    ShowMessage('Не найдена форма ' + MainView);
+    ShowMessage('РќРµ РЅР°Р№РґРµРЅР° С„РѕСЂРјР° ' + MainView);
     exit;
   end;
   FormFileName := adoMT_xmlformsxmlpath.Value;
@@ -1257,7 +1257,7 @@ begin
     if Assigned(Self.ReferenceViewItem) then
       if Self.ReferenceViewItem.ViewType in [vtView, vtTable, vtStored] then
       begin
-          //Делаем Lookup
+          //Р”РµР»Р°РµРј Lookup
       //PropertiesClassName := 'TcxLookupComboBoxProperties';
         PropertiesClass := TcxLookupComboBoxProperties;
 
@@ -1402,7 +1402,7 @@ begin
           ReferenceViewItem := ViewItemList.Find(reference);
           ReferenceHeadViewItem := ReferenceViewItem;
         end;
-        //В заголовке для фильтров иногда нужна другая view, чем lookup в поле
+        //Р’ Р·Р°РіРѕР»РѕРІРєРµ РґР»СЏ С„РёР»СЊС‚СЂРѕРІ РёРЅРѕРіРґР° РЅСѓР¶РЅР° РґСЂСѓРіР°СЏ view, С‡РµРј lookup РІ РїРѕР»Рµ
         if referencehead <> '' then
         begin
           ReferenceHeadViewItem := ViewItemList.Find(referencehead);
@@ -1412,9 +1412,9 @@ begin
         CreateColumn(gridDBMain, IfThen(i < MainViewItem.LeftFixedColumns, 0, 1));
 
 
-      //Создает фильтр контролы, если одноименный параметр в процедуре
+      //РЎРѕР·РґР°РµС‚ С„РёР»СЊС‚СЂ РєРѕРЅС‚СЂРѕР»С‹, РµСЃР»Рё РѕРґРЅРѕРёРјРµРЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ РІ РїСЂРѕС†РµРґСѓСЂРµ
         if Assigned(MainViewItem.Query.Parameters.FindParam('@' + Name)) then
-          if Assigned(ReferenceHeadViewItem) then    //Если фильтр выпадающий компонент
+          if Assigned(ReferenceHeadViewItem) then    //Р•СЃР»Рё С„РёР»СЊС‚СЂ РІС‹РїР°РґР°СЋС‰РёР№ РєРѕРјРїРѕРЅРµРЅС‚
           begin
             str_help := ReferenceHeadViewItem.Caption;
             if str_help = '' then str_help:=Caption;
@@ -1439,7 +1439,7 @@ begin
             end;
           end
           {else
-          begin //Если фильтр обычный Edit
+          begin //Р•СЃР»Рё С„РёР»СЊС‚СЂ РѕР±С‹С‡РЅС‹Р№ Edit
             AParent :=getGroupBox(Caption, self, pnlTop);
             with TcxButtonEdit.Create(AParent.Owner) do
             begin
@@ -1521,7 +1521,7 @@ begin
     end;
   end
   else
-    ShowMessage('Не найдена MainView: ' + adoMT_xmlformsMainView.Value);
+    ShowMessage('РќРµ РЅР°Р№РґРµРЅР° MainView: ' + adoMT_xmlformsMainView.Value);
 
 end;
 
@@ -1633,7 +1633,7 @@ begin
   end;
 
   for i := MainViewItem.Fields.Count - 1 downto 0 do
-  begin    //TODO Переделать на desctructor
+  begin    //TODO РџРµСЂРµРґРµР»Р°С‚СЊ РЅР° desctructor
     if TViewItemField(MainViewItem.Fields[i]).isDynamic then
     begin
       TViewItemField(MainViewItem.Fields[i]).Column.Destroy;
@@ -1725,7 +1725,7 @@ begin
           ViewItemStyle.CheckColumn := Column;
           ViewItemStyle.Style := TcxStyle(StyleRep[i]);
           MainViewItem.StyleList.Add(ViewItemStyle);
-          //Memo1.Lines.Add('Для: ' + ViewItemStyle.Column.DataBinding.FieldName + ' есть ' + ViewItemStyle.CheckColumn.DataBinding.FieldName);
+          //Memo1.Lines.Add('Р”Р»СЏ: ' + ViewItemStyle.Column.DataBinding.FieldName + ' РµСЃС‚СЊ ' + ViewItemStyle.CheckColumn.DataBinding.FieldName);
 
         end;
       end;
@@ -1768,7 +1768,7 @@ begin
 // MainViewItem.spadd := 'AddFile_TemplateImport';
   if MainViewItem.spadd = 'triton_upload(268)' then
   begin
-    response := AddFile_TemplateImport(268);  //TODO Гвозди убрать.
+    response := AddFile_TemplateImport(268);  //TODO Р“РІРѕР·РґРё СѓР±СЂР°С‚СЊ.
     if response <> '' then
     begin
       CHelper.spExecute('exec spSyncTable 13');
@@ -1780,7 +1780,7 @@ begin
 
   if MainViewItem.spadd = 'triton_upload(265)' then
   begin
-    response := AddFile_TemplateImport(265);  //TODO Гвозди убрать.
+    response := AddFile_TemplateImport(265);  //TODO Р“РІРѕР·РґРё СѓР±СЂР°С‚СЊ.
     if response <> '' then
     begin
       CHelper.spExecute('exec spSyncTable 13');
@@ -1793,7 +1793,7 @@ begin
 
   if MainViewItem.spadd = 'triton_upload(221)' then
   begin
-    response := AddFile_TemplateImport(221);  //TODO Гвозди убрать.
+    response := AddFile_TemplateImport(221);  //TODO Р“РІРѕР·РґРё СѓР±СЂР°С‚СЊ.
     if response <> '' then
     begin
       CHelper.spExecute('exec spSyncTable 13');
@@ -1805,7 +1805,7 @@ begin
 
   if MainViewItem.spadd = 'triton_upload(205)' then
   begin
-    response := AddFile_TemplateImport(205);  //TODO Гвозди убрать.
+    response := AddFile_TemplateImport(205);  //TODO Р“РІРѕР·РґРё СѓР±СЂР°С‚СЊ.
     if response <> '' then
     begin
       CHelper.spExecute('exec spSyncTable 13');
@@ -1817,7 +1817,7 @@ begin
 
   if MainViewItem.spadd = 'addfile' then
   begin
-    response := AddFile_TemplateImport(177);  //TODO Гвозди убрать.
+    response := AddFile_TemplateImport(177);  //TODO Р“РІРѕР·РґРё СѓР±СЂР°С‚СЊ.
     if response <> '' then
     begin
       CHelper.spExecute('spImport_fileload_price_LoadFile ' + response);
@@ -1828,7 +1828,7 @@ begin
 
   if MainViewItem.spadd = 'AddFile_TemplateImport' then
   begin
-    response := AddFile_TemplateImport(180);  //TODO Гвозди убрать.
+    response := AddFile_TemplateImport(180);  //TODO Р“РІРѕР·РґРё СѓР±СЂР°С‚СЊ.
     if response <> '' then
     begin
       CHelper.spExecute(DParser('spPriceCompareFirms_Loaded_LoadFile {PriceCompareFirms_id.value}, ') + response);
@@ -1854,17 +1854,17 @@ begin
     ProcedureName := MainViewItem.spAdd;
     Parameters.Refresh;
 
-      //Будет плясать от того, какие есть вхоядщие параметры
+      //Р‘СѓРґРµС‚ РїР»СЏСЃР°С‚СЊ РѕС‚ С‚РѕРіРѕ, РєР°РєРёРµ РµСЃС‚СЊ РІС…РѕСЏРґС‰РёРµ РїР°СЂР°РјРµС‚СЂС‹
     with TfrmEditor.Create(Self) do
     begin
       try
-        SetCaption('Добавить ' + MainViewItem.Caption);
+        SetCaption('Р”РѕР±Р°РІРёС‚СЊ ' + MainViewItem.Caption);
         for i := 0 to MainViewItem.Fields.Count - 1 do
         begin
           viField := TViewItemField(MainViewItem.Fields[i]);
           refViewItem := viField.ReferenceViewItem;
           if Assigned(Parameters.FindParam('@' + viField.name)) then
-          begin    //Будет плясать от того, какие есть вхоядщие параметры
+          begin    //Р‘СѓРґРµС‚ РїР»СЏСЃР°С‚СЊ РѕС‚ С‚РѕРіРѕ, РєР°РєРёРµ РµСЃС‚СЊ РІС…РѕСЏРґС‰РёРµ РїР°СЂР°РјРµС‚СЂС‹
             if Assigned(refViewItem) then
             begin
               AddList(viField.name, viField.Caption, viField.ReferenceViewItem.Value, refViewItem.Query, refViewItem.PrimayKey, refViewItem.ResultField);
@@ -1888,8 +1888,8 @@ begin
 
         end;
 
-          //addDate('date', 'Дата заказа', DateToStr(now));
-          //addList('firma', 'Поставщик', null, adoWholesaler);
+          //addDate('date', 'Р”Р°С‚Р° Р·Р°РєР°Р·Р°', DateToStr(now));
+          //addList('firma', 'РџРѕСЃС‚Р°РІС‰РёРє', null, adoWholesaler);
 
         if ShowModal() = mrOk then
         begin
@@ -1940,7 +1940,7 @@ begin
     {else if gridDBMain.DataController.RecordCount > 0 then
       gridDBMain.Controller.FocusedRecord.Selected := true;
      }
-//  Если режим авто, но прописаны процедцуры для добавления и удаления, то через них
+//  Р•СЃР»Рё СЂРµР¶РёРј Р°РІС‚Рѕ, РЅРѕ РїСЂРѕРїРёСЃР°РЅС‹ РїСЂРѕС†РµРґС†СѓСЂС‹ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ Рё СѓРґР°Р»РµРЅРёСЏ, С‚Рѕ С‡РµСЂРµР· РЅРёС…
   if (MainViewItem.BehaviorEditMode = emAuto) and (((actionType = atEdit) and (MainViewItem.spEdit <> '')) or ((actionType in [atAdd, atPickAdd, atCopyAdd]) and (MainViewItem.spAdd <> ''))) then
     isCustomMode := True
   else
@@ -1955,7 +1955,7 @@ begin
         ProcedureName := MainViewItem.spAdd;
       Parameters.Refresh;
 
-      Parameter := Parameters.FindParam('@CRUD');  //Спец параметр, означает что процедура все умеет.
+      Parameter := Parameters.FindParam('@CRUD');  //РЎРїРµС† РїР°СЂР°РјРµС‚СЂ, РѕР·РЅР°С‡Р°РµС‚ С‡С‚Рѕ РїСЂРѕС†РµРґСѓСЂР° РІСЃРµ СѓРјРµРµС‚.
       if Assigned(Parameter) then
       begin
         if actionType in [atAdd, atPickAdd, atCopyAdd] then
@@ -1968,16 +1968,16 @@ begin
       begin
         try
           if actionType = atEdit then
-            SetCaption('Редактировать ' + MainViewItem.Caption);
+            SetCaption('Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ ' + MainViewItem.Caption);
           if actionType in [atAdd, atPickAdd, atCopyAdd] then
-            SetCaption('Добавить ' + MainViewItem.Caption);
+            SetCaption('Р”РѕР±Р°РІРёС‚СЊ ' + MainViewItem.Caption);
 
           for i := 0 to MainViewItem.Fields.Count - 1 do
           begin
             viField := TViewItemField(MainViewItem.Fields[i]);
             refViewItem := viField.ReferenceViewItem;
             if Assigned(Parameters.FindParam('@' + viField.name)) then
-            begin    //Будет плясать от того, какие есть вхоядщие параметры
+            begin    //Р‘СѓРґРµС‚ РїР»СЏСЃР°С‚СЊ РѕС‚ С‚РѕРіРѕ, РєР°РєРёРµ РµСЃС‚СЊ РІС…РѕСЏРґС‰РёРµ РїР°СЂР°РјРµС‚СЂС‹
               if viField.EditMode in [emNone, emPick] then
                 AReadOnly := true
               else
@@ -2083,9 +2083,9 @@ begin
     with TfrmEditor.Create(Self) do
     begin
       if actionType = atEdit then
-        SetCaption('Редактировать ' + MainViewItem.Caption);
+        SetCaption('Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ ' + MainViewItem.Caption);
       if actionType in [atAdd, atPickAdd, atCopyAdd] then
-        SetCaption('Добавить ' + MainViewItem.Caption);
+        SetCaption('Р”РѕР±Р°РІРёС‚СЊ ' + MainViewItem.Caption);
 
       for i := 0 to MainViewItem.Fields.Count - 1 do
       begin
@@ -2227,10 +2227,10 @@ begin
   if (MainViewItem.BehaviorEditMode = emAuto) and not isCustomMode then
   begin
     if isMulti then
-      question := 'Удалить записей:' + VarToStr(gridDBMain.Controller.SelectedRowCount)
+      question := 'РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃРµР№:' + VarToStr(gridDBMain.Controller.SelectedRowCount)
     else
-      question := 'Удалить запись номер:' + VarToStr(MainViewItem.DataSource.DataSet.FieldByName(MainViewItem.PrimayKey).Value);
-    if MessageBox(handle, PChar(question), PChar('Удаление'), MB_YESNO + MB_ICONQUESTION) = idyes then
+      question := 'РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ РЅРѕРјРµСЂ:' + VarToStr(MainViewItem.DataSource.DataSet.FieldByName(MainViewItem.PrimayKey).Value);
+    if MessageBox(handle, PChar(question), PChar('РЈРґР°Р»РµРЅРёРµ'), MB_YESNO + MB_ICONQUESTION) = idyes then
     begin
       gridDBMain.DataController.DeleteFocused;
     end;
@@ -2251,10 +2251,10 @@ begin
       begin
         ParamKey.Value := MainViewItem.DataSource.DataSet.FieldByName(MainViewItem.PrimayKey).Value;
         if isMulti then
-          question := 'Удалить записей:' + VarToStr(gridDBMain.Controller.SelectedRowCount)
+          question := 'РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃРµР№:' + VarToStr(gridDBMain.Controller.SelectedRowCount)
         else
-          question := 'Удалить запись номер:' + VarToStr(ParamKey.Value);
-        if MessageBox(handle, PChar(question), PChar('Удаление'), MB_YESNO + MB_ICONQUESTION) = idyes then
+          question := 'РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ РЅРѕРјРµСЂ:' + VarToStr(ParamKey.Value);
+        if MessageBox(handle, PChar(question), PChar('РЈРґР°Р»РµРЅРёРµ'), MB_YESNO + MB_ICONQUESTION) = idyes then
         begin
           if (isMulti) and (Assigned(Parameters.FindParam('@Multi_id'))) then
           begin
@@ -2267,7 +2267,7 @@ begin
         end;
       end
       else
-        ShowMessage('Не могу найти ключ:' + MainViewItem.PrimayKey);
+        ShowMessage('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё РєР»СЋС‡:' + MainViewItem.PrimayKey);
     end
 
 //CHelper.spExecute(MainViewItem.Delete, MainViewItem.PrimayKey)
@@ -2342,7 +2342,7 @@ begin
 
   SetLength(s, Length(s) - 2);
   //ShowMessage(TcxGridDBColumn(gridDBMain.Controller.FocusedColumn).DataBinding.FieldName);
-  //TODO Нужен тип Actions
+  //TODO РќСѓР¶РµРЅ С‚РёРї Actions
   viAction := MainViewItem.Actions.Find(s);
   if Assigned(viAction) then
     viAction.Execute(self);
@@ -2402,7 +2402,7 @@ begin
 
   if Assigned(MainViewItem.IncomContext) then
     if MainViewItem.IncomContext <> nil then
-   //Pick режим подбора
+   //Pick СЂРµР¶РёРј РїРѕРґР±РѕСЂР°
       if MainViewItem.IncomContext.OpenFormPickMode then
       begin
         MainViewItem.Fields.SaveValues();
@@ -2411,7 +2411,7 @@ begin
       end;
 
   if MainViewItem.BehaviorEditMode in [emUnknown, emNone, emEditor, emAuto] then
-  begin //Обычный режим
+  begin //РћР±С‹С‡РЅС‹Р№ СЂРµР¶РёРј
     actEdit.Execute;
     Exit;
   end;
@@ -2645,7 +2645,7 @@ begin
 
 
 
-//  Body := '{"Sample":{"ИП": "Петров", "Номер":"пд243", "Дата накладной":"23.10.2018",  "nameHeader":12}, "лис2т1": {"тест":213} }';
+//  Body := '{"Sample":{"РРџ": "РџРµС‚СЂРѕРІ", "РќРѕРјРµСЂ":"РїРґ243", "Р”Р°С‚Р° РЅР°РєР»Р°РґРЅРѕР№":"23.10.2018",  "nameHeader":12}, "Р»РёСЃ2С‚1": {"С‚РµСЃС‚":213} }';
   HTTP1.HandleRedirects := true;
   HTTP1.Request.ContentType := 'application/json';
   HTTP1.Request.CharSet := 'utf-8';
@@ -2694,10 +2694,10 @@ end;
 
 function TfrmMetaControl.AddFile_TemplateImport(Template: Integer): string;
 var
-  {определяем переменные для выполнения поставленной задачи}
-  FileName: string; //имя файла :)
-  response: string; //переменная для возращения HTML кода страницы
-  formData: TIdMultiPartFormDataStream; //для передачи информации
+  {РѕРїСЂРµРґРµР»СЏРµРј РїРµСЂРµРјРµРЅРЅС‹Рµ РґР»СЏ РІС‹РїРѕР»РЅРµРЅРёСЏ РїРѕСЃС‚Р°РІР»РµРЅРЅРѕР№ Р·Р°РґР°С‡Рё}
+  FileName: string; //РёРјСЏ С„Р°Р№Р»Р° :)
+  response: string; //РїРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ РІРѕР·СЂР°С‰РµРЅРёСЏ HTML РєРѕРґР° СЃС‚СЂР°РЅРёС†С‹
+  formData: TIdMultiPartFormDataStream; //РґР»СЏ РїРµСЂРµРґР°С‡Рё РёРЅС„РѕСЂРјР°С†РёРё
   s: string;
   k: integer;
 begin
@@ -2715,7 +2715,7 @@ begin
       FileName := dlgSaveXLS.Files[0];
       formData := TIdMultiPartFormDataStream.Create;
       Http1.Request.ContentType := formData.RequestContentType;
-  {Передаем файл}
+  {РџРµСЂРµРґР°РµРј С„Р°Р№Р»}
       formData.AddFile('file', FileName, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       formData.AddFormField('template', IntToStr(Template));
 

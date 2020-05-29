@@ -330,7 +330,7 @@ end;
 
 class function CHelper.SearchIncxGrid(AView: TcxGridTableView; AText: string; AFromBeginning: boolean): boolean;
 //const
-//  MsgDataNotFound = 'Данные, удовлетворяющие условию поиска, не обнаружены';
+//  MsgDataNotFound = 'Р”Р°РЅРЅС‹Рµ, СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰РёРµ СѓСЃР»РѕРІРёСЋ РїРѕРёСЃРєР°, РЅРµ РѕР±РЅР°СЂСѓР¶РµРЅС‹';
 
 var
   GroupsIndex: integer;
@@ -361,19 +361,19 @@ begin
 
   if AFromBeginning then
   begin
-    // поиск с начала
-    // строка  - первая
-    // столбец - первый
+    // РїРѕРёСЃРє СЃ РЅР°С‡Р°Р»Р°
+    // СЃС‚СЂРѕРєР°  - РїРµСЂРІР°СЏ
+    // СЃС‚РѕР»Р±РµС† - РїРµСЂРІС‹Р№
     RowIndex := 0;
     ColIndex := 0;
   end
   else
   begin
-    // поиск с текущей позиции
-    // строка  - текущая
-    // столбец - слещующий после текущего
-    // если текущий столбец последний, то начинаем поиск
-    // с первого столбца следующей строки
+    // РїРѕРёСЃРє СЃ С‚РµРєСѓС‰РµР№ РїРѕР·РёС†РёРё
+    // СЃС‚СЂРѕРєР°  - С‚РµРєСѓС‰Р°СЏ
+    // СЃС‚РѕР»Р±РµС† - СЃР»РµС‰СѓСЋС‰РёР№ РїРѕСЃР»Рµ С‚РµРєСѓС‰РµРіРѕ
+    // РµСЃР»Рё С‚РµРєСѓС‰РёР№ СЃС‚РѕР»Р±РµС† РїРѕСЃР»РµРґРЅРёР№, С‚Рѕ РЅР°С‡РёРЅР°РµРј РїРѕРёСЃРє
+    // СЃ РїРµСЂРІРѕРіРѕ СЃС‚РѕР»Р±С†Р° СЃР»РµРґСѓСЋС‰РµР№ СЃС‚СЂРѕРєРё
     RowIndex := AView.Controller.FocusedRowIndex;
     ColIndex := AView.Controller.FocusedColumnIndex;
     if AView.Controller.FocusedColumn.IsLast then
@@ -387,7 +387,7 @@ begin
 
   if AView.DataController.Groups.GroupingItemCount = 0 then
   begin
-    // поиск в несгруппированном представлении
+    // РїРѕРёСЃРє РІ РЅРµСЃРіСЂСѓРїРїРёСЂРѕРІР°РЅРЅРѕРј РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРё
     for i := RowIndex to AView.ViewData.RowCount - 1 do
     begin
       //RecIndex := AView.ViewData.Rows[i].RecordIndex;
@@ -415,7 +415,7 @@ begin
   end
   else
   begin
-{    // поиск в сгруппированном представлении
+{    // РїРѕРёСЃРє РІ СЃРіСЂСѓРїРїРёСЂРѕРІР°РЅРЅРѕРј РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРё
     GroupsCount := TcxDataControllerGroupsProtected(AView.DataController.Groups).DataGroups.Count;
     GroupsIndex := AView.DataController.Groups.DataGroupIndexByRowIndex[RowIndex];
     for i := GroupsIndex to GroupsCount - 1 do
