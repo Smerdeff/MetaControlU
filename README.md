@@ -1,4 +1,5 @@
 # MetaControlU
-Some framework on Delphi. Crud and action on stored mssql
+A framework on Delphi. Crud and action on stored mssql. XML is source for specification.
+Need https://www.devexpress.com/
 
-## Without documentation
+### no documentation and example yet
